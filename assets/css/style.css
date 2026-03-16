@@ -1,0 +1,403 @@
+/* 
+    Darren Littlejohn - Portfolio
+    Aesthetics: Dark-mode Bento Box, Vercel/Stripe inspired.
+*/
+
+:root {
+    --bg-dark: #09090b;
+    --bg-card: rgba(255, 255, 255, 0.03);
+    --bg-card-hover: rgba(255, 255, 255, 0.05);
+    --border-color: rgba(255, 255, 255, 0.1);
+    --border-hover: rgba(255, 255, 255, 0.2);
+    
+    --text-primary: #f4f4f5;
+    --text-secondary: #a1a1aa;
+    --text-accent: #38bdf8;
+    
+    --gradient-1: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+    
+    --spotlight-color: rgba(56, 189, 248, 0.15);
+    
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-heading: 'Outfit', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+}
+
+::selection {
+    background: var(--text-accent);
+    color: #fff;
+}
+
+/* Spotlight Effect */
+#spotlight {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 50;
+    background: radial-gradient(600px circle at var(--mouse-x, 0) var(--mouse-y, 0), var(--spotlight-color), transparent 40%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+body:hover #spotlight {
+    opacity: 1;
+}
+
+/* Layout */
+.layout-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    min-height: 100vh;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 1024px) {
+    .layout-container {
+        flex-direction: row;
+        padding: 0 4rem;
+        gap: 4rem;
+    }
+}
+
+/* Header / Left Sidebar */
+.header-section {
+    padding-top: 4rem;
+    padding-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+@media (min-width: 1024px) {
+    .header-section {
+        position: sticky;
+        top: 0;
+        width: 45%;
+        height: 100vh;
+        max-height: 100vh;
+        padding-top: 6rem;
+        padding-bottom: 6rem;
+    }
+}
+
+.name-title {
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+    background: var(--gradient-1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.role-subtitle {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.hero-description {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    max-width: 320px;
+    margin-bottom: 3rem;
+    line-height: 1.5;
+}
+
+/* Navigation */
+.nav-links {
+    display: none;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 3rem;
+}
+
+@media (min-width: 1024px) {
+    .nav-links {
+        display: flex;
+    }
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    width: max-content;
+    transition: color 0.2s ease;
+}
+
+.nav-item:hover, .nav-item.active {
+    color: var(--text-primary);
+}
+
+.nav-indicator {
+    display: block;
+    height: 1px;
+    background-color: var(--text-secondary);
+    width: 2rem;
+    transition: all 0.2s ease;
+}
+
+.nav-item:hover .nav-indicator, .nav-item.active .nav-indicator {
+    width: 4rem;
+    background-color: var(--text-primary);
+}
+
+/* Social Links */
+.social-links {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: auto;
+}
+
+.social-links a {
+    color: var(--text-secondary);
+    font-size: 1.8rem;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.social-links a:hover {
+    color: var(--text-primary);
+    transform: translateY(-2px);
+}
+
+/* Main Content / Right Area */
+.main-content {
+    padding-top: 2rem;
+    padding-bottom: 6rem;
+}
+
+@media (min-width: 1024px) {
+    .main-content {
+        width: 55%;
+        padding-top: 6rem;
+    }
+}
+
+.section-block {
+    margin-bottom: 4rem;
+    scroll-margin-top: 6rem;
+}
+
+.section-label {
+    display: none; /* Hide on desktop, show on mobile maybe */
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.9rem;
+    color: var(--text-accent);
+    margin-bottom: 1.5rem;
+}
+
+@media (max-width: 1023px) {
+    .section-label {
+        display: block;
+    }
+}
+
+/* Bento Box Grid System */
+.bento-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .bento-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .p-wide {
+        grid-column: span 2;
+    }
+}
+
+/* Bento Cards */
+.bento-card {
+    position: relative;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    overflow: hidden;
+    transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+    cursor: default;
+}
+
+.bento-card:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--border-hover);
+    /* transform: translateY(-2px); */
+}
+
+/* Hover Glow Effect on Cards */
+.bento-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+        to bottom right,
+        rgba(255,255,255,0.1),
+        rgba(255,255,255,0)
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+}
+
+.card-glow {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(56, 189, 248, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    top: var(--card-y, -100%);
+    left: var(--card-x, -100%);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.bento-card:hover .card-glow {
+    opacity: 1;
+}
+
+.card-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.flex-row {
+    flex-direction: column;
+}
+
+@media (min-width: 640px) {
+    .flex-row {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 1.5rem;
+    }
+}
+
+.card-content h3 {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+}
+
+.card-content p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.card-content p:last-child {
+    margin-bottom: 0;
+}
+
+.pillar-icon {
+    font-size: 2.5rem;
+    color: var(--text-accent);
+    margin-bottom: 1rem;
+}
+
+.pillar-icon.large {
+    font-size: 3.5rem;
+    background: var(--gradient-1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Specific Card Styling */
+.hero-card p {
+    font-size: 1.05rem;
+}
+
+/* Toolkit Tags */
+.toolkit-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.tag-group {
+    margin-bottom: 1rem;
+}
+
+.tag-category {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.tag {
+    background: rgba(56, 189, 248, 0.1);
+    color: var(--text-accent);
+    padding: 0.4rem 0.8rem;
+    border-radius: 9999px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+/* Footer */
+.footer {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+@media (min-width: 1024px) {
+    .footer {
+        text-align: left;
+    }
+}
