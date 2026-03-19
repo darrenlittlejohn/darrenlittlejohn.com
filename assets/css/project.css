@@ -1,23 +1,20 @@
 /* 
-    Darren Littlejohn - Project Pages Style
-    Matches the main site's premium dark aesthetic.
+    Darren Littlejohn - Premium Project Design
+    Aesthetics: Glassmorphism, high-contrast, modern typography.
 */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800&display=swap');
 
 :root {
     --bg-dark: #09090b;
     --bg-card: rgba(255, 255, 255, 0.03);
-    --bg-card-hover: rgba(255, 255, 255, 0.05);
+    --bg-glass: rgba(255, 255, 255, 0.02);
     --border-color: rgba(255, 255, 255, 0.1);
     --border-hover: rgba(255, 255, 255, 0.2);
-    
-    --text-primary: #f4f4f5;
-    --text-secondary: #a1a1aa;
-    --text-accent: #38bdf8;
-    
-    --gradient-1: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
-    
-    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    --font-heading: 'Outfit', sans-serif;
+    --accent: #38bdf8;
+    --text-main: #f4f4f5;
+    --text-muted: #a1a1aa;
+    --gradient: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
 }
 
 * {
@@ -28,115 +25,200 @@
 
 body {
     background-color: var(--bg-dark);
-    color: var(--text-primary);
-    font-family: var(--font-sans);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
     line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    padding: 2rem;
+    overflow-x: hidden;
+    padding-bottom: 6rem;
+}
+
+/* Background Gradients */
+body::before {
+    content: '';
+    position: fixed;
+    top: -10%;
+    right: -10%;
+    width: 40vw;
+    height: 40vw;
+    background: radial-gradient(circle, rgba(56, 189, 248, 0.05) 0%, transparent 70%);
+    z-index: -1;
 }
 
 .container {
-    max-width: 900px;
+    max-width: 1000px;
     margin: 0 auto;
+    padding: 0 2rem;
 }
 
+/* Header & Nav */
 header {
-    margin-bottom: 4rem;
+    height: 100px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-.home-link {
-    font-family: var(--font-heading);
-    font-size: 1.5rem;
-    font-weight: 800;
-    text-decoration: none;
-    background: var(--gradient-1);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.back-btn {
-    color: var(--text-secondary);
-    text-decoration: none;
-    font-size: 0.9rem;
-    font-weight: 500;
-    transition: color 0.2s;
-}
-
-.back-btn:hover {
-    color: var(--text-primary);
-}
-
-.project-title {
-    font-family: var(--font-heading);
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-    line-height: 1.2;
-}
-
-.project-meta {
-    margin-bottom: 3rem;
-    padding-bottom: 2rem;
     border-bottom: 1px solid var(--border-color);
-}
-
-.content-section {
     margin-bottom: 4rem;
 }
 
-.content-section h2 {
-    font-family: var(--font-heading);
+.logo {
+    font-family: 'Outfit', sans-serif;
     font-size: 1.5rem;
+    font-weight: 800;
+    text-decoration: none;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: opacity 0.3s;
+}
+
+.logo:hover {
+    opacity: 0.8;
+}
+
+.back-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.3s, transform 0.3s;
+}
+
+.back-link:hover {
+    color: var(--text-main);
+    transform: translateX(-4px);
+}
+
+/* Project Hero */
+.hero {
+    margin-bottom: 5rem;
+}
+
+.project-label {
+    display: inline-block;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-size: 0.8rem;
+    font-weight: 700;
     margin-bottom: 1rem;
-    color: var(--text-primary);
 }
 
-.content-section p {
-    color: var(--text-secondary);
+h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 800;
+    line-height: 1.1;
     margin-bottom: 1.5rem;
-    font-size: 1.1rem;
+    letter-spacing: -0.02em;
 }
 
-.asset-box {
-    background: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: 1rem;
-    padding: 2rem;
-    text-align: center;
+.hero-meta {
+    display: flex;
+    gap: 2rem;
+    color: var(--text-muted);
+    font-size: 0.95rem;
     margin-top: 2rem;
 }
 
-.btn-primary {
-    display: inline-block;
-    padding: 0.8rem 1.5rem;
-    background: var(--gradient-1);
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Content Grid */
+.content-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4rem;
+}
+
+@media (min-width: 768px) {
+    .content-grid {
+        grid-template-columns: 1.5fr 1fr;
+    }
+}
+
+.main-content h2 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-main);
+}
+
+.main-content p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
+}
+
+/* Glass Card */
+.glass-card {
+    background: var(--bg-glass);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border-color);
+    border-radius: 1.5rem;
+    padding: 2.5rem;
+}
+
+.asset-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.asset-desc {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+}
+
+.cta-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: var(--gradient);
     color: white;
+    padding: 1rem 2rem;
+    border-radius: 0.75rem;
     text-decoration: none;
-    border-radius: 0.5rem;
     font-weight: 600;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.btn-primary:hover {
+.cta-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
+    box-shadow: 0 10px 20px rgba(56, 189, 248, 0.2);
 }
 
-img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 1rem;
+/* Image Styling */
+.image-container {
+    margin: 4rem 0;
+    position: relative;
+    border-radius: 2rem;
+    overflow: hidden;
     border: 1px solid var(--border-color);
 }
 
+.image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.5s;
+}
+
+.image-container:hover img {
+    transform: scale(1.02);
+}
+
+/* Footer */
 footer {
-    margin-top: 6rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--border-color);
-    color: var(--text-secondary);
-    font-size: 0.85rem;
+    margin-top: 8rem;
     text-align: center;
+    color: var(--text-muted);
+    font-size: 0.85rem;
 }

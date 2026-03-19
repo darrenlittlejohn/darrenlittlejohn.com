@@ -4,47 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fentanyl Morbidity: a project in R | Darren Littlejohn</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/portfolio/assets/css/project.css">
+    <link rel="stylesheet" href="/assets/css/project.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 <body>
     <div class="container">
         <header>
-            <a href="/portfolio/index.html" class="home-link">Darren Littlejohn</a>
-            <a href="/portfolio/index.html" class="back-btn">← Back to Home</a>
+            <a href="/index.html" class="logo">Darren Littlejohn</a>
+            <a href="/index.html" class="back-link">
+                <i class="ph ph-arrow-left"></i> Back to Hub
+            </a>
         </header>
 
-        <main>
-            <section class="project-header">
-                <h1 class="project-title">Fentanyl Morbidity: a project in R</h1>
-                <div class="project-meta">
-                    <p>Statistical Computing • R • Geospatial Analysis</p>
-                </div>
-            </section>
-
-            <section class="content-section">
-                <h2>Project Focus</h2>
-                <p>This project leverages R and the Tidyverse to visualize rates of Fentanyl morbidity across different demographics and regions, providing a data-driven perspective on a critical public health crisis.</p>
-            </section>
-
-            <section class="content-section">
-                <h2>Data Visualization</h2>
-                <div style="margin-top: 2rem;">
-                    <img src="/portfolio/projects/assets/2025-07-21-23_17_08-US-Fentanyl-Morbidity-by-Prescriber-State-and-County-_-by-Darren-Littlejohn-_-J-1536x1015.jpg" alt="Fentanyl Morbidity Plot" />
-                </div>
-            </section>
-
-            <div class="asset-box">
-                <p>View the source analysis and implementation.</p>
-                <a href="/portfolio/projects/assets/README-1.pdf" target="_blank" class="btn-primary">View Final Report</a>
+        <section class="hero">
+            <span class="project-label">Statistical Computing & Geospatial</span>
+            <h1>Fentanyl Morbidity: Data Visualization in R</h1>
+            <div class="hero-meta">
+                <div class="meta-item"><i class="ph ph-calendar"></i> 2024</div>
+                <div class="meta-item"><i class="ph ph-code"></i> R / Tidyverse</div>
             </div>
-        </main>
+        </section>
+
+        <div class="content-grid">
+            <div class="main-content">
+                <h2>The Analysis</h2>
+                <p>This project uses the R-Tidyverse ecosystem to map and analyze death rates and morbidity patterns related to Fentanyl usage. By cleaning complex medical datasets and applying geospatial mapping, I identified regional hotspots and demographic vulnerabilities.</p>
+                
+                <div class="image-container">
+                    <img src="/projects/assets/2025-07-21-23_17_08-US-Fentanyl-Morbidity-by-Prescriber-State-and-County-_-by-Darren-Littlejohn-_-J-1536x1015.jpg" alt="Fentanyl Morbidity Visualization">
+                </div>
+
+                <h2>Technical Stack</h2>
+                <p>The project highlights proficiency in `ggplot2` for high-end visualization, `dplyr` for data manipulation, and geospatial packages for regional trend analysis.</p>
+            </div>
+
+            <aside>
+                <div class="glass-card">
+                    <h3 class="asset-title">Final Report</h3>
+                    <p class="asset-desc">View the comprehensive summary of findings and the statistical methodology used in this project.</p>
+                    <a href="/projects/assets/README-1.pdf" target="_blank" class="cta-button">
+                        <i class="ph ph-file-pdf"></i> View Final PDF
+                    </a>
+                </div>
+            </aside>
+        </div>
 
         <footer>
-            <p>© 2024 Darren Littlejohn. Built with precision.</p>
+            <p>© 2024 Darren Littlejohn • Analysis with Precision</p>
         </footer>
     </div>
 </body>
