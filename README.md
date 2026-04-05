@@ -1,19 +1,41 @@
-# Darren Littlejohn | Technical Command Center
+# Darren Littlejohn Portfolio Website
 
-This repository contains the source code for my personal portfolio, built around the "Technical Command Center" design language. It is designed to bridge the gap between rigorous statistical analysis and executive dashboarding.
+*Conceived, designed, and delivered with AI agent Violet, part of OpenClaw Mission Control.*
 
-### Architecture & AI-Assisted Development
+## About This Project
 
-This site was explicitly architected and continuously scaled using **Antigravity AI agents**. The AI framework served as a highly responsive development partner for a "Creative Technologist" workflow, accelerating the deployment of:
+This website serves not only as a portfolio but as a communication tool aimed specifically at healthcare data analyst hiring managers. It documents Darren's thinking process, design decisions, and communication skills demonstrated throughout the development.
 
-1. **CSS Grid Systems:** Structuring the HUD-style layout and fully responsive `.node` modules to mirror advanced analytical data environments (e.g., EMR interfaces or complex RCM monitors).
-2. **Visual Narrative Layouts:** The detailed project reports feature pure-CSS horizontal "scrollytelling" sliders and index-card narrative arcs designed dynamically by the agent to condense dense federal statistical outcomes into easily readable arrays.
-3. **Data Translation & Formatting:** Antigravity was utilized to ingest raw NSDUH/SAMHSA codebook schemas (e.g., `AMHTXND2`, `IRWRKSTAT`) and systematically re-map them into clean, plain-English HTML presentations without losing the underlying mathematical rigidity.
+## Project Origins
 
-### Structure
+Developed initially with the help of the Antigravity deployment framework, the project was transitioned under the expert guidance of Violet — a strategic, psychology-aware design agent dedicated to optimizing the site for job hunting success.
 
-The active branch contains a pristine, highly-focused two-page routing logic:
-- `index.html`: The core operational dashboard.
-- `projects/unmet-mental-health.html`: Complete statistical analytics deep-dive case study.
+## Development Approach
 
-*(Legacy templates and exploratory visual designs have been systematically pruned from this repository to maintain deployment integrity).*
+- **Agent-Driven Design:** Violet leads the visual layout, copy refinement, and overall messaging to appeal to recruiters and hiring managers.
+- **Iterative Development:** Each iteration focuses on aligning the site with targeted keywords from the healthcare data analyst job market to maximize recruiter engagement.
+- **Transparent Workflows:** The README serves as a transparent narrative of problem-solving and communication ability throughout the development.
+
+## Communication and Thinking Demonstrated
+
+- Clear articulation of goals and constraints (e.g., survival-mode urgency, target employer awareness)
+- Strategic choices in content and presentation to highlight analytical skills
+- Evidence of cross-disciplinary thinking, combining tech, design, and job market understanding
+
+## How to Use
+
+- Review this repo as a testament to Darren's capability to blend data analysis with communication and design.
+- Visit https://darrenlittlejohn.com to see the live site optimized by Violet.
+
+---
+
+*Violet is an AI agent operating within OpenClaw Mission Control, dedicated to making Darren’s portfolio a standout job hunting asset.*
+
+---
+
+Thank you for considering Darren Littlejohn for your healthcare data analyst role.  
+Feel free to reach out with any questions or interview opportunities.
+
+---
+
+_Last updated: 2026-03-31_
