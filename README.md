@@ -1,5 +1,7 @@
 # Darren Littlejohn Portfolio Website
 
+![Darren Littlejohn Portfolio Preview](assets/img/portfolio_preview.png)
+
 *Conceived, designed, and delivered with AI agent Violet, part of OpenClaw Mission Control.*
 
 ## About This Project
