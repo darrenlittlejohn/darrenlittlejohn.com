@@ -1,57 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fentanyl Morbidity: a project in R | Darren Littlejohn</title>
-    <link rel="stylesheet" href="/assets/css/project.css">
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fentanyl Morbidity | DARREN LITTLEJOHN</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;700;800&family=Fraunces:opsz,wght@9..144,400;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/demo4.css" />
 </head>
 <body>
-    <div class="container">
-        <header>
-            <a href="/index.html" class="logo">Darren Littlejohn</a>
-            <a href="/index.html" class="back-link">
-                <i class="ph ph-arrow-left"></i> Back to Hub
-            </a>
-        </header>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">Darren Littlejohn<small>fentanyl morbidity case study</small></div>
 
-        <section class="hero">
-            <span class="project-label">Statistical Computing & Geospatial</span>
-            <h1>Fentanyl Morbidity: Data Visualization in R</h1>
-            <div class="hero-meta">
-                <div class="meta-item"><i class="ph ph-calendar"></i> 2024</div>
-                <div class="meta-item"><i class="ph ph-code"></i> R / Tidyverse</div>
-            </div>
-        </section>
+      <div class="status">
+        <div class="label">Local system time</div>
+        <div id="clock" class="clock">--:--:--</div>
+        <div id="clockSub" class="clock-sub">Mountain Time</div>
+      </div>
 
-        <div class="content-grid">
-            <div class="main-content">
-                <h2>The Analysis</h2>
-                <p>This project uses the R-Tidyverse ecosystem to map and analyze death rates and morbidity patterns related to Fentanyl usage. By cleaning complex medical datasets and applying geospatial mapping, I identified regional hotspots and demographic vulnerabilities.</p>
-                
-                <div class="image-container">
-                    <img src="/projects/assets/2025-07-21-23_17_08-US-Fentanyl-Morbidity-by-Prescriber-State-and-County-_-by-Darren-Littlejohn-_-J-1536x1015.jpg" alt="Fentanyl Morbidity Visualization">
-                </div>
+      <div class="nav">
+        <a href="../index.html" class="nav-link">Home</a>
+        <a href="#overview" class="nav-link active">Overview</a>
+        <a href="#story" class="nav-link">Story</a>
+        <a href="#framework" class="nav-link">Framework</a>
+        <a href="#results" class="nav-link">Results</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </div>
 
-                <h2>Technical Stack</h2>
-                <p>The project highlights proficiency in `ggplot2` for high-end visualization, `dplyr` for data manipulation, and geospatial packages for regional trend analysis.</p>
-            </div>
-
-            <aside>
-                <div class="glass-card">
-                    <h3 class="asset-title">Final Report</h3>
-                    <p class="asset-desc">View the comprehensive summary of findings and the statistical methodology used in this project.</p>
-                    <a href="/projects/assets/README-1.pdf" target="_blank" class="cta-button">
-                        <i class="ph ph-file-pdf"></i> View Final PDF
-                    </a>
-                </div>
-            </aside>
+      <div class="theme-box">
+        <div class="label">Choose Your Vibe</div>
+        <button id="themeToggle" class="theme-toggle" aria-expanded="true"><span id="themeCurrentLabel">Cool Morning</span></button>
+        <div id="themePanel" class="theme-panel" style="display: block;">
+          <div class="palette-grid" id="paletteGrid"></div>
         </div>
+      </div>
+    </aside>
 
-        <footer>
-            <p>© 2024 Darren Littlejohn • Analysis with Precision</p>
-        </footer>
-    </div>
+    <main class="main">
+      <section id="overview" class="hero">
+        <div class="card hero-copy">
+          <div class="eyebrow">Case Study Geospatial Forensics</div>
+          <h1>Fentanyl Morbidity</h1>
+          <p class="lead">A public health case study focused on identifying patterns between prescription activity and mortality risk indicators.</p>
+          <p class="lead">The value of this project is not only the visual output, but the way it translates difficult health data into interpretable signals for decision-makers.</p>
+          <div class="cta-row">
+            <a class="cta primary" href="#story">Story Behind The Data</a>
+            <a class="cta" href="#framework">Analytical Framework</a>
+            <a class="cta" href="#results">Results</a>
+          </div>
+        </div>
+        <div class="card hero-aside">
+          <div class="conversion-card">
+            <div class="label">Project Summary</div>
+            <p><strong>Focus:</strong> morbidity trend interpretation</p>
+            <p><strong>Stack:</strong> R, statistical analysis, visual communication</p>
+            <p><strong>Value:</strong> regional risk insight from federal-style data</p>
+          </div>
+          <div class="conversion-card">
+            <div class="label">Hiring Relevance</div>
+            <ul class="proof-points">
+              <li>Evidence of analytical rigor in sensitive healthcare data contexts.</li>
+              <li>Strong translation from statistical relationships to practical interpretation.</li>
+              <li>Useful model for healthcare reporting that needs both rigor and clarity.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="story" class="card panel project-section">
+        <div class="eyebrow">Project Overview</div>
+        <h2>The Story Behind The Data</h2>
+        <p class="section-copy">This project investigates how prescription-related patterns may align with broader morbidity and mortality signals. The emphasis is on interpreting the data responsibly and presenting risk clusters clearly.</p>
+        <p class="section-copy">It demonstrates the ability to work with complex healthcare-adjacent data and shape the output into something usable for analysts, administrators, and public-health stakeholders.</p>
+        <div class="info-grid">
+          <div class="media-frame">
+            <img src="./assets/fentanyl/scatter_fentanyl_vs_deaths.png" alt="Fentanyl prescriptions versus deaths scatter plot" class="project-image" />
+          </div>
+          <div class="media-frame">
+            <img src="./assets/fentanyl/scatter_fentanyl_vs_seniors.png" alt="Fentanyl prescriptions versus senior demographic scatter plot" class="project-image" />
+          </div>
+        </div>
+      </section>
+
+      <section id="framework" class="card panel project-section">
+        <div class="eyebrow">Methodology</div>
+        <h2>The Analytical Framework</h2>
+        <div class="info-grid">
+          <div class="info-card">
+            <h3>Question</h3>
+            <p>Test whether prescription behavior aligns with worsening outcome patterns across locations and subgroups.</p>
+          </div>
+          <div class="info-card">
+            <h3>Approach</h3>
+            <p>Use visual and statistical comparisons to isolate meaningful correlations without overstating causality.</p>
+          </div>
+          <div class="info-card">
+            <h3>Communication</h3>
+            <p>Present high-risk relationships in a way that remains readable for non-technical healthcare stakeholders.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="results" class="card process project-section">
+        <div class="eyebrow">Results</div>
+        <h2>What The Project Shows</h2>
+        <div class="steps">
+          <div class="step"><div class="num">1</div><strong>Risk Signal</strong><p>Surfaces patterns that point to concentrated public-health risk rather than isolated noise.</p></div>
+          <div class="step"><div class="num">2</div><strong>Analytical Discipline</strong><p>Shows careful distinction between pattern detection and unsupported causal claims.</p></div>
+          <div class="step"><div class="num">3</div><strong>Stakeholder Utility</strong><p>Turns difficult statistical evidence into a usable summary for decision-makers.</p></div>
+          <div class="step"><div class="num">4</div><strong>Portfolio Value</strong><p>Demonstrates healthcare-relevant analytical storytelling under sensitive subject matter.</p></div>
+        </div>
+      </section>
+
+      <section id="contact" class="card panel">
+        <div class="eyebrow">Next Step</div>
+        <h2>Discuss The Work</h2>
+        <div class="cta-row">
+          <a class="cta" href="https://github.com/darrenlittlejohn/fentanyl_morbidity_project" target="_blank" rel="noopener noreferrer">Project Repo</a>
+          <a class="cta primary" href="mailto:darren@darrenlittlejohn.com">Schedule Interview</a>
+          <a class="cta" href="../index.html">Return Home</a>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="../js/demo4.js"></script>
 </body>
 </html>

@@ -1,53 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dutch Retail Sales Dashboard | Darren Littlejohn</title>
-    <link rel="stylesheet" href="/assets/css/project.css">
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dutch Retail Sales | DARREN LITTLEJOHN</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;700;800&family=Fraunces:opsz,wght@9..144,400;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/demo4.css" />
 </head>
 <body>
-    <div class="container">
-        <header>
-            <a href="/index.html" class="logo">Darren Littlejohn</a>
-            <a href="/index.html" class="back-link">
-                <i class="ph ph-arrow-left"></i> Back to Hub
-            </a>
-        </header>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">Darren Littlejohn<small>dutch retail sales case study</small></div>
 
-        <section class="hero">
-            <span class="project-label">Business Intelligence & Dashboards</span>
-            <h1>Dutch Retail Sales (1960–1995): an Excel KPI Hub</h1>
-            <div class="hero-meta">
-                <div class="meta-item"><i class="ph ph-calendar"></i> 2024</div>
-                <div class="meta-item"><i class="ph ph-chart-pie"></i> Business Intelligence</div>
-            </div>
-        </section>
+      <div class="status">
+        <div class="label">Local system time</div>
+        <div id="clock" class="clock">--:--:--</div>
+        <div id="clockSub" class="clock-sub">Mountain Time</div>
+      </div>
 
-        <div class="content-grid">
-            <div class="main-content">
-                <h2>The Challenge</h2>
-                <p>Historical datasets often suffer from fragmentation and legacy formatting. This project involved cleaning and aggregating decades of Dutch retail performance data to create a high-fidelity, interactive stakeholder dashboard.</p>
-                
-                <h2>Implementation</h2>
-                <p>The solution features dynamic filtering, period-over-period growth tracking, and automated forecasting models built within a robust Excel architecture. This demonstrates senior-level capability in turning raw sales data into actionable business levers.</p>
-            </div>
+      <div class="nav">
+        <a href="../index.html" class="nav-link">Home</a>
+        <a href="#overview" class="nav-link active">Overview</a>
+        <a href="#dashboard" class="nav-link">Dashboard</a>
+        <a href="#architecture" class="nav-link">Architecture</a>
+        <a href="#impact" class="nav-link">Impact</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </div>
 
-            <aside>
-                <div class="glass-card">
-                    <h3 class="asset-title">Interactive Assets</h3>
-                    <p class="asset-desc">Download the full interactive Excel workbook to explore the data models and visualization techniques.</p>
-                    <a href="/projects/assets/Dutch_Retail_Sales-1.xlsx" class="cta-button">
-                        <i class="ph ph-microsoft-excel-logo"></i> Download Dashboard
-                    </a>
-                </div>
-            </aside>
+      <div class="theme-box">
+        <div class="label">Choose Your Vibe</div>
+        <button id="themeToggle" class="theme-toggle" aria-expanded="true"><span id="themeCurrentLabel">Cool Morning</span></button>
+        <div id="themePanel" class="theme-panel" style="display: block;">
+          <div class="palette-grid" id="paletteGrid"></div>
         </div>
+      </div>
+    </aside>
 
-        <footer>
-            <p>© 2024 Darren Littlejohn • Analysis with Precision</p>
-        </footer>
-    </div>
+    <main class="main">
+      <section id="overview" class="hero">
+        <div class="card hero-copy">
+          <div class="eyebrow">Case Study Enterprise Intelligence</div>
+          <h1>Dutch Retail Sales</h1>
+          <p class="lead">A retail analytics case study focused on turning legacy sales reporting into a more reactive, decision-ready dashboard environment.</p>
+          <p class="lead">The page is structured for hiring managers: clear business problem, visual proof, technical architecture, and direct relevance to operational analytics work.</p>
+          <div class="cta-row">
+            <a class="cta primary" href="#dashboard">View Dashboard</a>
+            <a class="cta" href="#architecture">Technical Architecture</a>
+            <a class="cta" href="#impact">Business Impact</a>
+          </div>
+        </div>
+        <div class="card hero-aside">
+          <div class="conversion-card">
+            <div class="label">Project Summary</div>
+            <p><strong>Focus:</strong> sales metrics modernization</p>
+            <p><strong>Stack:</strong> SQL, Python, Tableau</p>
+            <p><strong>Value:</strong> faster insight for business decisions</p>
+          </div>
+          <div class="conversion-card">
+            <div class="label">Hiring Relevance</div>
+            <ul class="proof-points">
+              <li>Dashboard thinking tied to real business questions.</li>
+              <li>Clear translation from raw metrics to executive visibility.</li>
+              <li>Evidence of BI workflow design, not only analysis.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="dashboard" class="card panel project-section">
+        <div class="eyebrow">Executive View</div>
+        <h2>Dashboard Output</h2>
+        <p class="section-copy">The core artifact is a retail sales dashboard built to surface business performance quickly, replacing slower and more fragmented review patterns.</p>
+        <div class="media-frame">
+          <img src="../assets/img/retail_sales_index_dashboard-1-2048x1738.png" alt="Dutch Retail Sales dashboard" class="project-image" />
+        </div>
+      </section>
+
+      <section id="architecture" class="card panel project-section">
+        <div class="eyebrow">Technical Architecture</div>
+        <h2>How The Project Works</h2>
+        <div class="info-grid">
+          <div class="info-card">
+            <h3>Data Pipeline</h3>
+            <p>Structured source metrics into a cleaner reporting layer designed for repeatable business monitoring.</p>
+          </div>
+          <div class="info-card">
+            <h3>Analytical Logic</h3>
+            <p>Used SQL and supporting automation to standardize measures and prepare them for BI consumption.</p>
+          </div>
+          <div class="info-card">
+            <h3>BI Delivery</h3>
+            <p>Presented metrics in a dashboard format intended to shorten the path from question to decision.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="impact" class="card process project-section">
+        <div class="eyebrow">Business Impact</div>
+        <h2>Why This Matters</h2>
+        <div class="steps">
+          <div class="step"><div class="num">1</div><strong>Speed</strong><p>Moves reporting toward faster operational visibility.</p></div>
+          <div class="step"><div class="num">2</div><strong>Clarity</strong><p>Turns raw sales outputs into a cleaner business narrative.</p></div>
+          <div class="step"><div class="num">3</div><strong>Decision Support</strong><p>Supports managers who need trend visibility without manual interpretation overhead.</p></div>
+          <div class="step"><div class="num">4</div><strong>Portfolio Value</strong><p>Demonstrates BI thinking that transfers to healthcare operations and revenue cycle reporting.</p></div>
+        </div>
+      </section>
+
+      <section id="contact" class="card panel">
+        <div class="eyebrow">Next Step</div>
+        <h2>Discuss The Work</h2>
+        <div class="cta-row">
+          <a class="cta" href="https://github.com/darrenlittlejohn/dutch-retail-sales-dashboard" target="_blank" rel="noopener noreferrer">Project Repo</a>
+          <a class="cta primary" href="mailto:darren@darrenlittlejohn.com">Schedule Interview</a>
+          <a class="cta" href="../index.html">Return Home</a>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="../js/demo4.js"></script>
 </body>
 </html>

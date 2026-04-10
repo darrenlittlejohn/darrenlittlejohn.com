@@ -1,631 +1,188 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DARREN LITTLEJOHN // RCM INTELLIGENCE</title>
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-deep: #020406;
-            --bg-surface: #0a0d11;
-            --accent-glow: #00ff8c;
-            --accent-dim: #004d2b;
-            --text-main: #e2e8f0;
-            --text-dim: #64748b;
-            --border-industrial: rgba(255, 255, 255, 0.05);
-            --grid-line: rgba(0, 255, 140, 0.05);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background-color: var(--bg-deep);
-            background-image: 
-                linear-gradient(var(--grid-line) 1px, transparent 1px),
-                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-            background-size: 40px 40px;
-            color: var(--text-main);
-            font-family: 'JetBrains Mono', monospace;
-            line-height: 1.5;
-            min-height: 100vh;
-            border: 1px solid var(--accent-dim);
-            margin: 10px;
-        }
-
-        /* Scanline Effect */
-        body::after {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(0, 255, 140, 0.02), rgba(0, 255, 140, 0.02));
-            background-size: 100% 2px, 3px 100%;
-            pointer-events: none;
-            z-index: 1000;
-            opacity: 0.1;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 40px 40px 100px 40px;
-            position: relative;
-            z-index: 10;
-        }
-
-        /* --- Global HUD Elements --- */
-        .hud-top {
-            display: flex;
-            justify-content: space-between;
-            border-bottom: 1px solid var(--accent-dim);
-            padding-bottom: 20px;
-            margin-bottom: 60px;
-            font-size: 0.75rem;
-            color: var(--accent-glow);
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-        }
-
-        .hud-top span { display: flex; align-items: center; gap: 10px; }
-
-
-        /* --- Main Title --- */
-        .commander-title {
-            margin-bottom: 80px;
-        }
-
-        .commander-title h1 {
-            font-family: 'Outfit', sans-serif;
-            font-size: clamp(3rem, 7vw, 5.5rem);
-            font-weight: 800;
-            letter-spacing: -0.05em;
-            text-transform: uppercase;
-            line-height: 0.9;
-        }
-
-        .commander-title h1 span {
-            display: block;
-            color: transparent;
-            -webkit-text-stroke: 1px rgba(255,255,255,0.2);
-        }
-
-        .commander-title h1 em {
-            font-style: normal;
-            background: linear-gradient(to bottom, #fff, #555);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .commander-subtitle {
-            margin-top: 20px;
-            font-size: 1.25rem;
-            color: var(--accent-glow);
-            text-transform: uppercase;
-            letter-spacing: 0.3em;
-        }
-
-        /* --- Grid Layout Framework --- */
-        .grid-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-        }
-
-        .node {
-            background: var(--bg-surface);
-            border: 1px solid var(--border-industrial);
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            transition: all 0.4s ease;
-        }
-
-        .node-full {
-            grid-column: span 2;
-        }
-
-        .node::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: var(--accent-glow);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.4s ease;
-            z-index: 10;
-        }
-
-        .node:hover {
-            border-color: var(--accent-glow);
-            box-shadow: 0 0 30px rgba(0, 255, 140, 0.1);
-        }
-
-        .node:hover::before {
-            transform: scaleX(1);
-        }
-
-        /* Content vs Image Handling */
-        .node-img-container {
-            width: 100%;
-            background: #000;
-            position: relative;
-            border-bottom: 1px solid var(--border-industrial);
-        }
-
-        .node-img-container img {
-            width: 100%;
-            display: block;
-            height: auto; 
-            filter: grayscale(1) contrast(1.2);
-            opacity: 0.6;
-            transition: all 0.6s ease;
-        }
-
-        .node:hover .node-img-container img {
-            filter: grayscale(0.2) contrast(1.1);
-            opacity: 0.9;
-        }
-        
-        /* Node Text Content */
-        .node-content {
-            padding: 30px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-        }
-
-        .node-header {
-            font-size: 0.75rem;
-            color: var(--accent-glow);
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            border-bottom: 1px dashed var(--accent-dim);
-            padding-bottom: 10px;
-        }
-
-        .node-title {
-            font-family: 'Outfit', sans-serif;
-            font-size: 2.2rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            margin-bottom: 15px;
-            line-height: 1;
-            color: #fff;
-        }
-
-        .node-desc {
-            color: var(--text-dim);
-            font-size: 1rem;
-            margin-bottom: 20px;
-        }
-
-        /* Tech Tags */
-        .tech-tags {
-            margin-top: auto;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .tag {
-            font-size: 0.75rem;
-            border: 1px solid var(--accent-dim);
-            padding: 4px 10px;
-            color: var(--accent-glow);
-            background: rgba(0, 255, 140, 0.05);
-            text-transform: uppercase;
-        }
-
-        /* System Stats Styling (Brought back!) */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            padding: 10px 0;
-            width: 100%;
-        }
-
-        .stat-bar {
-            width: 100%;
-        }
-
-        .bar-label {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            color: var(--text-main);
-            letter-spacing: 0.1em;
-        }
-
-        .bar-outer {
-            height: 6px;
-            background: rgba(255,255,255,0.05);
-            width: 100%;
-            border: 1px solid var(--border-industrial);
-        }
-
-        .bar-inner {
-            height: 100%;
-            background: var(--accent-glow);
-            box-shadow: 0 0 10px var(--accent-glow);
-            transition: width 1s ease-out;
-        }
-
-        /* Terminal Footer */
-        .terminal-strip {
-            grid-column: span 2;
-            margin-top: 20px;
-            background: #000;
-            border: 1px solid var(--accent-dim);
-            padding: 20px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .cursor {
-            display: inline-block;
-            width: 8px;
-            height: 1.2em;
-            background: var(--accent-glow);
-            animation: blink 1s infinite steps(2);
-            vertical-align: middle;
-            margin-left: 5px;
-        }
-
-        @keyframes blink {
-            0% { opacity: 0; }
-        }
-
-        .terminal-links a {
-            color: var(--accent-glow);
-            text-decoration: none;
-            border: 1px solid var(--accent-dim);
-            padding: 8px 16px;
-            font-size: 0.8rem;
-            margin-left: 20px;
-            transition: all 0.3s ease;
-        }
-
-        .terminal-links a:hover {
-            background: var(--accent-glow);
-            color: #000;
-        }
-
-        @media (max-width: 900px) {
-            .container { padding: 20px 15px 80px 15px; }
-            .grid-layout { grid-template-columns: 1fr; gap: 25px; }
-            .node-full, .terminal-strip, .stats-grid { grid-column: span 1; }
-            .stats-grid { grid-template-columns: 1fr; }
-            .terminal-strip { flex-direction: column; align-items: flex-start; gap: 20px; }
-            .terminal-links a { margin-left: 0; margin-right: 20px; }
-            .commander-title { flex-direction: column; gap: 30px; align-items: stretch !important; }
-            .simple-ticker { width: 100%; height: auto; aspect-ratio: 16 / 9; }
-            .node-img-container { min-height: 180px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-            .node-img-container img { object-fit: contain; width: 100%; height: 100%; max-height: 50vh; }
-        }
-
-        /* Simple Header Ticker */
-        .simple-ticker {
-            width: 250px;
-            height: 140px;
-            border: 1px solid var(--border-industrial);
-            position: relative;
-            overflow: hidden;
-            background: #000;
-        }
-        .ticker-caption {
-            font-size: 0.65rem;
-            color: var(--accent-glow);
-            text-transform: uppercase;
-            padding: 6px;
-            border-bottom: 1px solid var(--accent-dim);
-            text-align: center;
-            letter-spacing: 0.1em;
-        }
-        .ticker-slide {
-            position: absolute;
-            top: 28px; left: 0; width: 100%; height: calc(100% - 28px);
-            opacity: 0;
-            transition: opacity 1s ease-in-out;
-            cursor: pointer;
-        }
-        .ticker-slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            filter: grayscale(0.8);
-            transition: filter 0.3s;
-        }
-        .ticker-slide:hover img {
-            filter: grayscale(0);
-        }
-        .slide-A { animation: cycleFade4 20s infinite 0s; }
-        .slide-B { animation: cycleFade4 20s infinite 5s; }
-        .slide-C { animation: cycleFade4 20s infinite 10s; }
-        .slide-D { animation: cycleFade4 20s infinite 15s; }
-        @keyframes cycleFade4 {
-            0%, 20% { opacity: 1; z-index: 2; }
-            25%, 100% { opacity: 0; z-index: 1; }
-        }
-
-        /* HUD Ticker */
-        .hud-ticker-wrap {
-            flex-grow: 1;
-            margin: 0 40px;
-            overflow: hidden;
-            white-space: nowrap;
-            position: relative;
-            background: rgba(0, 255, 140, 0.03);
-            border-left: 1px solid var(--accent-dim);
-            border-right: 1px solid var(--accent-dim);
-        }
-
-        .hud-ticker {
-            display: inline-block;
-            padding-left: 100%;
-            animation: ticker 60s linear infinite;
-        }
-
-        .ticker-item {
-            display: inline-block;
-            padding: 0 30px;
-            color: var(--accent-glow);
-            font-weight: 600;
-        }
-
-        .ticker-item span {
-            color: #fff;
-            margin-left: 8px;
-        }
-
-        @keyframes ticker {
-            0% { transform: translate3d(0, 0, 0); }
-            100% { transform: translate3d(-100%, 0, 0); }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Darren Littlejohn | Revenue Cycle Management</title>
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;700;800&family=Fraunces:opsz,wght@9..144,400;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/demo4.css" />
 </head>
 <body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">Darren Littlejohn<small>Healthcare Data Analytics</small></div>
 
-    <div class="container">
-        <!-- System HUD updated for RCM Metrics -->
-        <div class="hud-top">
-            <span><a href="index.html" style="color: var(--accent-glow); text-decoration: none; border-bottom: 1px dashed var(--accent-dim);">[HOME]</a></span>
-            
-            <div class="hud-ticker-wrap">
-                <div class="hud-ticker">
-                    <div class="ticker-item">CLEAN CLAIM RATE <span>95.2%</span></div>
-                    <div class="ticker-item">FIRST PASS DENIAL RATE <span>4.8%</span></div>
-                    <div class="ticker-item">NET COLLECTION RATE <span>97.2%</span></div>
-                    <div class="ticker-item">NET DAYS IN A/R <span>31.4</span></div>
-                    <div class="ticker-item">A/R > 90 DAYS <span>16.5%</span></div>
-                    <div class="ticker-item">POS COLLECTIONS <span>28.6%</span></div>
-                    <div class="ticker-item">PATIENT RESPONSIBILITY COLLECTED AT VISIT <span>39.0%</span></div>
-                    <div class="ticker-item">CHARGE POSTING LAG <span>7.8 DAYS</span></div>
-                    <div class="ticker-item">DENIAL WRITE-OFF RATE <span>1.3%</span></div>
-                    <div class="ticker-item">COST TO COLLECT <span>3.1%</span></div>
-                    <!-- Duplicate for seamless loop -->
-                    <div class="ticker-item">CLEAN CLAIM RATE <span>95.2%</span></div>
-                    <div class="ticker-item">FIRST PASS DENIAL RATE <span>4.8%</span></div>
-                    <div class="ticker-item">NET COLLECTION RATE <span>97.2%</span></div>
-                </div>
-            </div>
+      <div class="status">
+        <div id="clock" class="clock">--:--:--</div>
+        <div id="clockSub" class="clock-sub">MT</div>
+      </div>
 
-            <span id="date-display">TIMESTAMP</span>
+      <div class="profile-links">
+        <a class="profile-link" href="https://github.com/darrenlittlejohn" target="_blank" rel="noopener noreferrer">GitHub Profile</a>
+        <a class="profile-link" href="https://www.linkedin.com/in/darrenlittlejohn/" target="_blank" rel="noopener noreferrer">LinkedIn Profile</a>
+      </div>
+
+      <div class="nav">
+        <a href="#overview" class="nav-link active">Overview</a>
+        <a href="#case-studies" class="nav-link">Case Studies</a>
+        <a href="#proof" class="nav-link">Proof of Execution</a>
+        <a href="#process" class="nav-link">Process</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </div>
+
+      <div class="theme-box">
+        <div class="label">Choose Your Vibe</div>
+        <button id="themeToggle" class="theme-toggle" aria-expanded="true"><span id="themeCurrentLabel">Cool Morning</span></button>
+        <div id="themePanel" class="theme-panel" style="display: block;">
+          <div class="palette-grid" id="paletteGrid"></div>
         </div>
+      </div>
+    </aside>
 
-        <header class="commander-title" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 80px;">
-            <div>
-                <!-- Prominent Name FIRST -->
-                <h1 style="font-size: clamp(3.5rem, 6vw, 5rem); color: #fff; margin-bottom: 10px;">
-                    DARREN LITTLEJOHN
-                </h1>
+    <main class="main">
+      <div class="ticker">
+        <div class="ticker-track" style="animation: scroll 60s linear infinite;">
+          <span><strong>CLEAN CLAIM RATE</strong>95.2%</span>
+          <span><strong>FIRST PASS DENIAL RATE</strong>4.8%</span>
+          <span><strong>NET COLLECTION RATE</strong>97.2%</span>
+          <span><strong>NET DAYS IN A/R</strong>31.4</span>
+          <span><strong>A/R &gt; 90 DAYS</strong>16.5%</span>
+          <span><strong>POS COLLECTIONS</strong>28.6%</span>
+          <span><strong>PATIENT RESPONSIBILITY COLLECTED AT VISIT</strong>39.0%</span>
+          <span><strong>CHARGE POSTING LAG</strong>7.8 DAYS</span>
+          <span><strong>DENIAL WRITE-OFF RATE</strong>1.3%</span>
+          <span><strong>COST TO COLLECT</strong>3.1%</span>
+          <span><strong>CLEAN CLAIM RATE</strong>95.2%</span>
+          <span><strong>FIRST PASS DENIAL RATE</strong>4.8%</span>
+          <span><strong>NET COLLECTION RATE</strong>97.2%</span>
+        </div>
+      </div>
 
-                <!-- Revenue Cycle Management Title -->
-                <div style="font-size: 2.2rem; font-family: 'Outfit', sans-serif; font-weight: 800; text-transform: uppercase;">
-                    Revenue Cycle <span style="color: var(--accent-glow);">Management</span>
-                </div>
-
-                <div class="commander-subtitle" style="margin-top: 5px; color: var(--text-dim); letter-spacing: 0.1em; font-size: 1.1rem;">
-                    Senior Data Analyst // Healthcare Expertise
-                </div>
-
-                <!-- Social Links -->
-                <div class="social-links" style="margin-top: 30px; display: flex; gap: 20px; font-size: 0.85rem;">
-                    <a href="https://linkedin.com/in/darrenlittlejohn" target="_blank" style="color: var(--text-main); text-decoration: none; border-bottom: 1px solid var(--accent-dim); padding-bottom: 2px; transition: color 0.3s; pointer-events: auto;" onmouseover="this.style.color='var(--accent-glow)'" onmouseout="this.style.color='var(--text-main)'">[LINKEDIN]</a>
-                    <a href="https://github.com/darrenlittlejohn" target="_blank" style="color: var(--text-main); text-decoration: none; border-bottom: 1px solid var(--accent-dim); padding-bottom: 2px; transition: color 0.3s;" onmouseover="this.style.color='var(--accent-glow)'" onmouseout="this.style.color='var(--text-main)'">[GITHUB]</a>
-                </div>
-            </div>
-
-            <!-- Header Ticker for LinkedIn Graphics -->
-            <div class="simple-ticker">
-                <div class="ticker-caption">THE ZEN OF DATA ANALYSIS</div>
-                <!-- Original Image 1 -->
-                <a href="https://www.linkedin.com/in/darrenlittlejohn/recent-activity/articles/" target="_blank" class="ticker-slide slide-A">
-                    <img src="assets/img/brain_of_data_analyst.png" alt="The Zen of Data Analysis Blog - Brain of Data Analyst">
-                </a>
-                <!-- Uploaded Zen Monk Image 1 -->
-                <a href="https://www.linkedin.com/in/darrenlittlejohn/recent-activity/articles/" target="_blank" class="ticker-slide slide-B">
-                    <img src="assets/img/zen_001.png" alt="The Zen of Data Analysis Blog - Zen Graphic 1">
-                </a>
-                <!-- Uploaded Zen Monk Image 2 -->
-                <a href="https://www.linkedin.com/in/darrenlittlejohn/recent-activity/articles/" target="_blank" class="ticker-slide slide-C">
-                    <img src="assets/img/zen_002.png" alt="The Zen of Data Analysis Blog - Zen Graphic 2">
-                </a>
-                <!-- Uploaded Zen Monk Image 3 -->
-                <a href="https://www.linkedin.com/in/darrenlittlejohn/recent-activity/articles/" target="_blank" class="ticker-slide slide-D">
-                    <img src="assets/img/zen_003.png" alt="The Zen of Data Analysis Blog - Zen Graphic 3">
-                </a>
-            </div>
-        </header>
-
-        <main class="grid-layout">
-            
-            <!-- Operational Profile Node: Creative Technologist -->
-            <div class="node node-full" style="border-color: var(--accent-glow);">
-                <div class="node-content">
-                    <div class="node-header">
-                        <span>OPERATIONAL_PROFILE</span>
-                        <span>CREATIVE_TECHNOLOGIST</span>
-                    </div>
-                    <div class="node-title" style="font-size: 2rem; color: #fff;">Behavioral Analyst & Data Storyteller</div>
-                    <div class="node-desc" style="max-width: 1000px; font-size: 1.1rem; line-height: 1.6; color: var(--text-main);">
-                        Graduate-level training in research methods and statistical analysis (Psychology; Cognitive/Behavioral emphasis). Skilled in SQL, Python, R, ETL workflows, visualization, and translating complex analyses into clear, actionable narratives for senior leadership and non-technical stakeholders. Senior-strength communicator, teacher, and data storyteller with experience documenting workflows, building repeatable analysis processes, and improving reporting clarity. Background includes evidence-based public-health research, analysis of SAMHSA/CDC/federal health datasets, and producing rigorously sourced, decision-focused insights.
-                    </div>
-                    
-                    <!-- Proof of Execution (Addressing "Show me an example") -->
-                    <div style="margin-top: 25px; padding: 20px; border: 1px solid var(--accent-glow); border-radius: 4px; background: rgba(0, 255, 140, 0.05); box-sizing: border-box; overflow: hidden;">
-                        <span style="color: var(--accent-glow); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; display: block; margin-bottom: 15px; font-weight: 800;">EVIDENCE // PROOF_OF_EXECUTION:</span>
-                        <div style="display: flex; flex-direction: column; gap: 12px;">
-                            <a href="projects/unmet-mental-health.html" style="color: #fff; text-decoration: none; font-size: 0.95rem; transition: color 0.3s;" onmouseover="this.style.color='var(--accent-glow)'" onmouseout="this.style.color='#fff'">
-                                <span style="color: var(--accent-glow);">►</span> <strong>sql_mini_mentalhealth:</strong> Approaching SAMHSA datasets from unexpected vectors to prove the impact of healthcare access on employment.
-                            </a>
-                            <a href="projects/dutch-retail-sales.html" style="color: #fff; text-decoration: none; font-size: 0.95rem; transition: color 0.3s;" onmouseover="this.style.color='var(--accent-glow)'" onmouseout="this.style.color='#fff'">
-                                <span style="color: var(--accent-glow);">►</span> <strong>dutch-retail-sales-dashboard:</strong> Reverse-engineering legacy sales metrics into a real-time reactive infrastructure for immediate business insight.
-                            </a>
-                            <a href="projects/fentanyl-morbidity.html" style="color: #fff; text-decoration: none; font-size: 0.95rem; transition: color 0.3s;" onmouseover="this.style.color='var(--accent-glow)'" onmouseout="this.style.color='#fff'">
-                                <span style="color: var(--accent-glow);">►</span> <strong>fentanyl_morbidity_project:</strong> Extracting hidden, high-risk geospatial clusters from raw federal prescription data.
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Mental Health Project: Spans full width, dynamic height -->
-            <a href="projects/unmet-mental-health.html" class="node node-full" style="text-decoration: none; color: inherit; cursor: pointer; display: flex; flex-direction: column;">
-                <div class="node-img-container">
-                    <img src="assets/img/unmet_need_sex-2048x368.png" alt="Mental Health Analysis">
-                </div>
-                <div class="node-content">
-                    <div class="node-header">
-                        <span>HEALTHCARE_ECONOMICS</span>
-                        <span>STATISTICAL_REGRESSION</span>
-                    </div>
-                    <div class="node-title">sql_mini_mentalhealth</div>
-                    <div class="node-desc">Quantifying unmet healthcare needs across federal demographics to drive legislative resource allocation. Performed rigorous Chi-Square statistical analysis on SAMHSA dataset parameters.</div>
-                    <div class="tech-tags" style="align-items: center;">
-                        <span class="tag">R</span>
-                        <span class="tag">SQL</span>
-                        <span class="tag">Chi-Square Analysis</span>
-                        <span class="action-btn" style="color: #000; background: var(--accent-glow); padding: 6px 18px; margin-left: auto; font-weight: 800; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.1em; cursor: pointer; border-radius: 2px; box-shadow: 0 0 10px rgba(0,255,140,0.3); transition: all 0.3s;">GO DEEPER ➔</span>
-                    </div>
-                </div>
+      <section id="overview" class="hero">
+        <div class="card hero-copy">
+          <div class="eyebrow">Senior Data Analyst Healthcare Expertise</div>
+          <p class="lead">Behavioral Analyst &amp; Data Storyteller</p>
+          <h1>Darren Littlejohn Revenue Cycle Management</h1>
+          <p class="lead">Graduate-level training in research methods and statistical analysis (Psychology; Cognitive/Behavioral emphasis). Skilled in SQL, Python, R, ETL workflows, visualization, and translating complex analyses into clear, actionable narratives for senior leadership and non-technical stakeholders.</p>
+          <p class="lead">Background includes evidence-based public-health research, analysis of SAMHSA/CDC/federal health datasets, and producing rigorously sourced, decision-focused insights.</p>
+          <div class="cta-row">
+            <a class="cta primary" href="#case-studies">Explore Projects</a>
+            <a class="cta" href="#proof">Proof of Execution</a>
+            <a class="cta" href="#process">Technical Proficiency</a>
+            <a class="cta" href="#contact">Contact</a>
+          </div>
+          <div class="cta-row">
+            <a class="cta" href="https://linkedin.com/in/darrenlittlejohn" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a class="cta" href="https://github.com/darrenlittlejohn" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a class="cta" href="https://www.linkedin.com/in/darrenlittlejohn/recent-activity/articles/" target="_blank" rel="noopener noreferrer">The Zen of Data Analysis</a>
+          </div>
+        </div>
+        <div class="card hero-aside">
+          <div class="thought-leadership">
+            <div class="thought-label">Thought Leadership</div>
+            <a id="zenHeroLink" href="https://www.linkedin.com/in/darrenlittlejohn/recent-activity/articles/" target="_blank" rel="noopener noreferrer" class="zen-hero-link">
+              <div class="zen-hero-title">The Zen of Data Analysis</div>
+              <img id="zenHeroImage" src="assets/img/brain_of_data_analyst.png" alt="The Zen of Data Analysis">
             </a>
-
-            <!-- Dutch Retail Project -->
-            <a href="projects/dutch-retail-sales.html" class="node" style="text-decoration: none; color: inherit; cursor: pointer; display: flex; flex-direction: column;">
-                <div class="node-img-container">
-                    <img src="assets/img/retail_sales_index_dashboard-1-2048x1738.png" alt="Dutch Retail KPI Hub">
-                </div>
-                <div class="node-content">
-                    <div class="node-header">
-                        <span>ENTERPRISE_INTELLIGENCE</span>
-                        <span>REAL-TIME_BI</span>
-                    </div>
-                    <div class="node-title">dutch-retail-sales-dashboard</div>
-                    <div class="node-desc">Reverse-engineering legacy sales metrics into a real-time reactive infrastructure for immediate business insight.</div>
-                    <div class="tech-tags" style="align-items: center; margin-top: 15px;">
-                        <span class="tag">Python</span>
-                        <span class="tag">SQL</span>
-                        <span class="tag">Tableau</span>
-                        <span class="action-btn" style="color: var(--accent-glow); border: 1px solid var(--accent-glow); padding: 5px 12px; margin-left: auto; font-weight: 800; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.1em; transition: all 0.3s;">GO DEEPER ➔</span>
-                    </div>
-                </div>
-            </a>
-
-            <!-- Fentanyl Project -->
-
-            <!-- Fentanyl Project -->
-            <a href="projects/fentanyl-morbidity.html" class="node" style="text-decoration: none; color: inherit; cursor: pointer; display: flex; flex-direction: column;">
-                <div class="node-img-container" style="display: flex; justify-content: center; align-items: center; background: #000; padding: 20px;">
-                    <img src="assets/img/2025-07-21-23_17_08-US-Fentanyl-Morbidity-by-Prescriber-State-and-County-_-by-Darren-Littlejohn-_-J.jpg" alt="Fentanyl Map" style="max-width: 500px; width: 100%; height: auto; object-fit: contain; filter: grayscale(0.5) contrast(1.1); opacity: 0.8;">
-                </div>
-                <div class="node-content">
-                    <div class="node-header">
-                        <span>GEOSPATIAL_FORENSICS</span>
-                        <span>EPIDEMIOLOGY</span>
-                    </div>
-                    <div class="node-title">fentanyl_morbidity_project</div>
-                    <div class="node-desc">Critical heat-mapping of prescription trends to identify high-risk regional clusters of systemic fentanyl distribution.</div>
-                    <div class="tech-tags" style="align-items: center; margin-top: 15px;">
-                        <span class="tag">R / Tidyverse</span>
-                        <span class="tag">ggplot2</span>
-                        <span class="tag">Spatial Data</span>
-                        <span class="action-btn" style="color: var(--accent-glow); border: 1px solid var(--accent-glow); padding: 5px 12px; margin-left: auto; font-weight: 800; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.1em; transition: all 0.3s;">GO DEEPER ➔</span>
-                    </div>
-                </div>
-            </a>
-
-            <!-- Experience Stack Node (Green Bars restored) -->
-            <div class="node node-full">
-                <div class="node-content">
-                    <div class="node-header" style="border-bottom: none; margin-bottom: 5px;">
-                        <span>TECHNICAL_PROFICIENCY</span>
-                        <span>STACK_QUALIFICATION</span>
-                    </div>
-                    <div class="stats-grid">
-                        <div class="stat-bar">
-                            <div class="bar-label"><span>SQL / Database Architecture</span><span>92%</span></div>
-                            <div class="bar-outer"><div class="bar-inner" style="width: 92%;"></div></div>
-                        </div>
-                        <div class="stat-bar">
-                            <div class="bar-label"><span>Python / Automation</span><span>65%</span></div>
-                            <div class="bar-outer"><div class="bar-inner" style="width: 65%;"></div></div>
-                        </div>
-                        <div class="stat-bar">
-                            <div class="bar-label"><span>Tableau / BI Visualization</span><span>88%</span></div>
-                            <div class="bar-outer"><div class="bar-inner" style="width: 88%;"></div></div>
-                        </div>
-                        <div class="stat-bar">
-                            <div class="bar-label"><span>R / Statistical Analysis</span><span>85%</span></div>
-                            <div class="bar-outer"><div class="bar-inner" style="width: 85%;"></div></div>
-                        </div>
-                    </div>
-                </div>
+          </div>
+          <div class="conversion-card">
+            <div class="label">Professional Focus</div>
+            <p><strong>Healthcare Data Analyst</strong></p>
+            <p>Revenue Cycle Management, data quality, and analytics storytelling.</p>
+          </div>
+          <div class="conversion-card">
+            <div class="label">Hiring Evidence</div>
+            <div class="evidence-accordion">
+              <details>
+                <summary>End-to-End Case Study Architecture & SQL Implementation</summary>
+                <ul class="proof-points">
+                  <li>Engineered three full healthcare case studies from extraction through delivery.</li>
+                  <li>Applied advanced SQL patterns including joins, CTEs, and window logic.</li>
+                  <li>Documented method and findings with transparent, auditable analytical flow.</li>
+                </ul>
+              </details>
+              <details>
+                <summary>Federal & Public Health Data Translation</summary>
+                <ul class="proof-points">
+                  <li>Processed federal/public-health datasets into clean analytical structures.</li>
+                  <li>Converted raw data into decision-ready narratives for non-technical stakeholders.</li>
+                  <li>Highlighted actionable insights for resource allocation and care delivery focus.</li>
+                </ul>
+              </details>
+              <details>
+                <summary>Business-Aligned Project Delivery</summary>
+                <ul class="proof-points">
+                  <li>Connected problem, method, and business relevance in each portfolio page.</li>
+                  <li>Structured deliverables for fast technical + managerial review.</li>
+                  <li>Focused each project on practical decision impact, not just technical output.</li>
+                </ul>
+              </details>
             </div>
+          </div>
+          <div class="cta-row">
+            <a class="cta primary" href="mailto:darren@darrenlittlejohn.com?subject=Interview%20Request%20-%20Healthcare%20Data%20Analytics">Schedule Interview</a>
+            <a class="cta" href="#case-studies">View Case Studies</a>
+          </div>
+        </div>
+      </section>
 
-            <!-- Terminal Strip -->
-            <div class="terminal-strip">
-                <div>
-                    <span style="color: var(--accent-glow)">darren@littlejohn:~$</span> init hire_sequence --urgency high<span class="cursor"></span>
-                </div>
-                <div class="terminal-links">
-                    <a href="mailto:darren@darrenlittlejohn.com">CONTACT_LINK</a>
-                    <a href="#">ENCRYPTED_CV</a>
-                </div>
-            </div>
+      <section id="case-studies" class="grid">
+        <article class="card panel">
+          <h3>Unmet Mental Health</h3>
+          <p>Quantifying unmet healthcare needs across federal demographics to drive legislative resource allocation. Performed rigorous Chi-Square statistical analysis on SAMHSA dataset parameters.</p>
+          <p><a class="inline-link" href="projects/unmet-mental-health.html">Open Project</a></p>
+        </article>
+        <article class="card panel">
+          <h3>Dutch Retail Sales</h3>
+          <p>Reverse-engineering legacy sales metrics into a real-time reactive infrastructure for immediate business insight.</p>
+          <p><a class="inline-link" href="projects/dutch-retail-sales.html">Open Project</a></p>
+        </article>
+        <article class="card panel">
+          <h3>Fentanyl Morbidity</h3>
+          <p>Critical heat-mapping of prescription trends to identify high-risk regional clusters of systemic fentanyl distribution.</p>
+          <p><a class="inline-link" href="projects/fentanyl-morbidity.html">Open Project</a></p>
+        </article>
+      </section>
 
-        </main>
-    </div>
+      <section id="proof" class="card panel">
+        <div class="eyebrow">Evidence</div>
+        <h2>Proof of Execution</h2>
+        <div class="steps">
+          <div class="step"><div class="num">1</div><strong>Healthcare Economics</strong><p><a class="inline-link" href="projects/unmet-mental-health.html">Unmet Mental Health</a> Approaching SAMHSA datasets from unexpected vectors to prove the impact of healthcare access on employment.</p></div>
+          <div class="step"><div class="num">2</div><strong>Enterprise Intelligence</strong><p><a class="inline-link" href="projects/dutch-retail-sales.html">Dutch Retail Sales</a> Reverse-engineering legacy sales metrics into a reactive decision system.</p></div>
+          <div class="step"><div class="num">3</div><strong>Geospatial Forensics</strong><p><a class="inline-link" href="projects/fentanyl-morbidity.html">Fentanyl Morbidity</a> Extracting hidden high-risk clusters from federal prescription data.</p></div>
+          <div class="step"><div class="num">4</div><strong>Thought Leadership</strong><p><a class="inline-link" href="https://www.linkedin.com/in/darrenlittlejohn/recent-activity/articles/" target="_blank" rel="noopener noreferrer">The Zen of Data Analysis</a> explores analytics, communication, and visual storytelling through portfolio-linked articles and graphics.</p></div>
+        </div>
+      </section>
 
-    <script>
-        function updateTimestamp() {
-            const now = new Date();
-            const iso = now.toISOString(); // YYYY-MM-DDTHH:mm:ss.sssZ
-            const formatted = iso.replace('T', ' ').slice(0, 21); // YYYY-MM-DD HH:mm:ss.s
-            document.getElementById('date-display').innerText = 'TIMESTAMP: ' + formatted + ' UTC-7';
-        }
-        setInterval(updateTimestamp, 100);
-        updateTimestamp();
-    </script>
+      <section id="process" class="card process">
+        <div class="eyebrow">Portfolio Evidence</div>
+        <h2>What These Projects Prove</h2>
+        <div class="proof-grid">
+          <div class="proof-card"><strong>Unmet Mental Health</strong><p>Frames a healthcare question, builds the SQL pipeline, applies statistical testing, and explains why the result matters.</p></div>
+          <div class="proof-card"><strong>Fentanyl Morbidity</strong><p>Takes complex public-health data and turns it into interpretable visual evidence for risk-focused decision making.</p></div>
+          <div class="proof-card"><strong>Dutch Retail Sales</strong><p>Shows dashboard thinking, metric design, and how raw reporting becomes something a manager can actually use.</p></div>
+          <div class="proof-card"><strong>Across All Three</strong><p>Demonstrates question design, data preparation, analysis, visualization, and stakeholder-facing communication.</p></div>
+        </div>
+        <div class="stack-tags">
+          <span class="tag">SQL</span>
+          <span class="tag">Tableau</span>
+          <span class="tag">R</span>
+          <span class="tag">Python</span>
+        </div>
+      </section>
+
+      <section id="contact" class="card panel">
+        <div class="eyebrow">Contact</div>
+        <h2>Contact Darren Littlejohn</h2>
+        <p>Email Darren directly at <a class="inline-link" href="mailto:darren@darrenlittlejohn.com?subject=Interview%20Request%20-%20Healthcare%20Data%20Analytics">darren@darrenlittlejohn.com</a> to discuss the portfolio and interview opportunities.</p>
+      </section>
+    </main>
+  </div>
+
+  <script src="js/demo4.js"></script>
 </body>
 </html>
-

@@ -1,9 +1,0 @@
-# Ignore deployment scripts and credentials
-deploy_sftp.py
-deploy.bat
-dreamhost_sftp_config.txt
-
-_development_tools/
-*.py
-*.bat
-*.txt

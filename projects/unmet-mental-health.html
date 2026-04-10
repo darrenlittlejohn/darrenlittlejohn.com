@@ -1,472 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unmet Mental Health Need | DARREN LITTLEJOHN</title>
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-deep: #020406;
-            --bg-surface: #0a0d11;
-            --accent-glow: #00ff8c;
-            --accent-dim: #004d2b;
-            --text-main: #e2e8f0;
-            --text-dim: #64748b;
-            --border-industrial: rgba(255, 255, 255, 0.05);
-            --grid-line: rgba(0, 255, 140, 0.05);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background-color: var(--bg-deep);
-            background-image: 
-                linear-gradient(var(--grid-line) 1px, transparent 1px),
-                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-            background-size: 40px 40px;
-            color: var(--text-main);
-            font-family: 'JetBrains Mono', monospace;
-            line-height: 1.5;
-            min-height: 100vh;
-            border: 1px solid var(--accent-dim);
-            margin: 10px;
-        }
-
-        /* Scanline Effect */
-        body::after {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            background-size: 100% 2px, 3px 100%;
-            pointer-events: none;
-            z-index: 1000;
-            opacity: 0.1;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px;
-            position: relative;
-            z-index: 10;
-        }
-
-        .hud-top {
-            display: flex;
-            justify-content: space-between;
-            border-bottom: 1px solid var(--accent-dim);
-            padding-bottom: 20px;
-            margin-bottom: 60px;
-            font-size: 0.75rem;
-            color: var(--accent-glow);
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-        }
-        .hud-top span { display: flex; align-items: center; gap: 10px; }
-        .hud-top span::before { content: "["; }
-        .hud-top span::after { content: "]"; }
-        .hud-top a { color: var(--accent-glow); text-decoration: none; transition: 0.3s; }
-        .hud-top a:hover { color: #fff; }
-
-        .commander-title { margin-bottom: 60px; }
-        .commander-title h1 {
-            font-family: 'Outfit', sans-serif;
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            text-transform: uppercase;
-            line-height: 1;
-            color: #fff;
-        }
-        .commander-subtitle {
-            margin-top: 15px;
-            font-size: 1rem;
-            color: var(--accent-glow);
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-        }
-
-        .grid-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-        }
-
-        .node {
-            background: var(--bg-surface);
-            border: 1px solid var(--border-industrial);
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            transition: all 0.4s ease;
-            padding: 30px;
-        }
-        .node-full { grid-column: span 2; }
-        .node::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 2px;
-            background: var(--accent-glow);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.4s ease;
-            z-index: 10;
-        }
-        .node:hover {
-            border-color: var(--accent-glow);
-            box-shadow: 0 0 30px rgba(0, 255, 140, 0.05);
-        }
-        .node:hover::before { transform: scaleX(1); }
-
-        .data-matrix {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.85rem;
-            color: var(--text-main);
-            font-family: 'Outfit', sans-serif;
-        }
-        .data-matrix th, .data-matrix td {
-            padding: 10px 15px;
-            border-bottom: 1px solid var(--border-industrial);
-            text-align: left;
-        }
-        .data-matrix th {
-            background: rgba(0,255,140,0.05);
-            color: var(--accent-glow);
-            text-transform: uppercase;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            letter-spacing: 0.1em;
-            position: sticky;
-            top: 0;
-        }
-        .data-matrix tr:last-child td { border-bottom: none; }
-        .data-matrix td:first-child {
-            font-family: 'JetBrains Mono', monospace;
-            color: #fff;
-            white-space: nowrap;
-        }
-        .data-matrix td:nth-child(2) {
-            color: var(--accent-glow);
-            font-weight: 600;
-        }
-
-        .node-header {
-            font-size: 0.75rem;
-            color: var(--accent-glow);
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            border-bottom: 1px dashed var(--accent-dim);
-            padding-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-        .node-title {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            margin-bottom: 15px;
-            line-height: 1.1;
-            color: #fff;
-        }
-        .node-title span { color: var(--accent-glow); }
-        .node-desc {
-            color: var(--text-dim);
-            font-size: 0.95rem;
-            margin-bottom: 20px;
-        }
-        .node-desc strong { color: var(--text-main); }
-        
-        ul.hud-list { list-style: none; margin-bottom: 20px; }
-        ul.hud-list li {
-            color: var(--text-dim);
-            font-size: 0.9rem;
-            margin-bottom: 8px;
-            padding-left: 15px;
-            position: relative;
-        }
-        ul.hud-list li::before {
-            content: ">";
-            position: absolute;
-            left: 0;
-            color: var(--accent-glow);
-        }
-        ul.hud-list strong { color: var(--text-main); }
-
-        /* SCROLL STORYTELLING CSS SLIDER */
-        .story-slider-container {
-            margin-top: 10px;
-            position: relative;
-        }
-        .story-slider {
-            display: flex;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            gap: 20px;
-            padding-bottom: 20px;
-            scrollbar-width: thin;
-            scrollbar-color: var(--accent-glow) var(--bg-deep);
-            scroll-behavior: smooth;
-        }
-        .story-slider::-webkit-scrollbar { height: 10px; }
-        .story-slider::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 4px; }
-        .story-slider::-webkit-scrollbar-thumb { background: var(--accent-glow); border-radius: 4px; box-shadow: 0 0 10px rgba(0,255,140,0.5); }
-
-        .story-slide {
-            flex: 0 0 90%;
-            scroll-snap-align: center;
-            background: #000;
-            border: 1px solid var(--border-industrial);
-            display: flex;
-            flex-direction: column;
-            border-radius: 4px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-        @media (min-width: 900px) {
-            .story-slide { flex: 0 0 80%; }
-        }
-        .story-slide:hover {
-            border-color: var(--accent-glow);
-            box-shadow: 0 0 30px rgba(0, 255, 140, 0.15);
-        }
-        .story-slide img {
-            width: 100%;
-            height: clamp(300px, 50vh, 500px);
-            object-fit: contain;
-            background: #000;
-            border-bottom: 1px solid var(--border-industrial);
-        }
-        .story-slide .caption {
-            padding: 25px;
-            color: #fff;
-            background: var(--bg-surface);
-            font-family: 'Outfit', sans-serif;
-            font-size: clamp(1.1rem, 2vw, 1.4rem);
-            line-height: 1.4;
-        }
-        .story-slide .caption span {
-            color: var(--accent-glow);
-            margin-right: 15px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.9rem;
-            vertical-align: middle;
-            font-weight: 400;
-        }
-        
-        .swipe-hint {
-            text-align: right;
-            font-size: 0.8rem;
-            color: var(--accent-glow);
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            margin-top: -10px;
-            margin-bottom: 25px;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
-        }
-
-        @media (max-width: 900px) {
-            .grid-layout { grid-template-columns: 1fr; }
-            .node-full { grid-column: span 1; }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unmet Mental Health | DARREN LITTLEJOHN</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;700;800&family=Fraunces:opsz,wght@9..144,400;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/demo4.css" />
 </head>
 <body>
-    <div class="container">
-        <!-- System HUD -->
-        <div class="hud-top">
-            <span><a href="../index_local.html">← RETURN TO CORE_SYSTEM</a></span>
-            <span>PROJECT // 01</span>
-            <span class="pulse">SYS.STATUS: [ONLINE]</span>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">Darren Littlejohn<small>unmet mental health case study</small></div>
+
+      <div class="status">
+        <div class="label">Local system time</div>
+        <div id="clock" class="clock">--:--:--</div>
+        <div id="clockSub" class="clock-sub">Mountain Time</div>
+      </div>
+
+      <div class="nav">
+        <a href="../index.html" class="nav-link">Home</a>
+        <a href="#overview" class="nav-link active">Overview</a>
+        <a href="#pipeline" class="nav-link">Pipeline</a>
+        <a href="#visual" class="nav-link">Visualization</a>
+        <a href="#results" class="nav-link">Results</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </div>
+
+      <div class="theme-box">
+        <div class="label">Choose Your Vibe</div>
+        <button id="themeToggle" class="theme-toggle" aria-expanded="true"><span id="themeCurrentLabel">Cool Morning</span></button>
+        <div id="themePanel" class="theme-panel" style="display: block;">
+          <div class="palette-grid" id="paletteGrid"></div>
         </div>
+      </div>
+    </aside>
 
-        <header class="commander-title">
-            <h1>UNMET MENTAL HEALTH NEED <br><span style="color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.2);">& EMPLOYMENT OUTCOMES</span></h1>
-            <div class="commander-subtitle">Public Policy & Data Analysis // NSDUH Study</div>
-        </header>
+    <main class="main">
+      <section id="overview" class="hero">
+        <div class="card hero-copy">
+          <div class="eyebrow">Case Study Healthcare Economics</div>
+          <h1>Unmet Mental Health</h1>
+          <p class="lead">A healthcare analytics case study examining whether failing to treat mental health needs is associated with measurable workforce detachment.</p>
+          <p class="lead">This project shows the full arc hiring managers care about: question framing, data preparation, testing approach, validation logic, and clearly communicated findings.</p>
+          <div class="cta-row">
+            <a class="cta primary" href="#pipeline">Research Pipeline</a>
+            <a class="cta" href="#visual">Primary Visualization</a>
+            <a class="cta" href="#results">Results</a>
+          </div>
+        </div>
+        <div class="card hero-aside">
+          <div class="conversion-card">
+            <div class="label">Project Summary</div>
+            <p><strong>Focus:</strong> unmet need and employment status</p>
+            <p><strong>Stack:</strong> PostgreSQL, SQL, statistical testing</p>
+            <p><strong>Value:</strong> turns public-health data into workforce-relevant evidence</p>
+          </div>
+          <div class="conversion-card">
+            <div class="label">Hiring Relevance</div>
+            <ul class="proof-points">
+              <li>Strong example of question-to-conclusion analytical discipline.</li>
+              <li>Directly relevant to healthcare quality, utilization, and reporting work.</li>
+              <li>Shows ability to translate complex methods into stakeholder-readable output.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
 
-        <div class="grid-layout">
-            
-            <!-- THE DATA STORY (SLIDESHOW) -->
-            <div class="node node-full" style="padding: 30px 30px 10px 30px;">
-                <div class="node-header">
-                    <span>MODULE.01 // THE DATA STORY</span>
-                    <span>RENDER: SCROLL_NARRATIVE</span>
-                </div>
-                <div class="swipe-hint">SWIPE / SCROLL HORIZONTALLY TO VIEW STORY ➔</div>
-                
-                <div class="story-slider-container">
-                    <div class="story-slider">
-                        <!-- THE PROBLEM -->
-                        <div class="story-slide">
-                            <img src="https://raw.githubusercontent.com/darrenlittlejohn/sql_mini_mentalhealth/main/media/ffa3c1e969ff0bfdf80bf6813fc0ca66.png" alt="The Problem">
-                            <div class="caption"><span>[THE PROBLEM]</span> Millions of adults experience unmet mental health needs. What is the downstream economic impact of failing to provide care?</div>
-                        </div>
-                        <!-- THE DATA -->
-                        <div class="story-slide">
-                            <img src="https://raw.githubusercontent.com/darrenlittlejohn/sql_mini_mentalhealth/main/media/adfb68d742f2c0b90ca898e7231b1d16.png" alt="The Data">
-                            <div class="caption"><span>[THE DATA]</span> We analyzed millions of federal records from SAMHSA/NSDUH—the gold standard for U.S. behavioral health data—utilizing complex statistical weighting.</div>
-                        </div>
-                        <!-- THE QUESTION -->
-                        <div class="story-slide">
-                            <img src="https://raw.githubusercontent.com/darrenlittlejohn/sql_mini_mentalhealth/main/media/91b4acff0e95e80ddc586a5d2fa2f190.png" alt="The Question">
-                            <div class="caption"><span>[THE QUESTION]</span> We were curious: Does an unmet mental health need directly destroy workforce participation? Exactly how severe is the detachment?</div>
-                        </div>
-                        <!-- THE HYPOTHESIS -->
-                        <div class="story-slide">
-                            <img src="https://raw.githubusercontent.com/darrenlittlejohn/sql_mini_mentalhealth/main/media/526f22d3206602dc505d1f0cc1e8c85b.png" alt="The Hypothesis">
-                            <div class="caption"><span>[THE HYPOTHESIS]</span> Adults reporting unmet needs will have statistically higher odds of being fully unemployed or out of the labor force, regardless of demographics.</div>
-                        </div>
-                        <!-- THE TEST (ENGINEERING) -->
-                        <div class="story-slide">
-                            <img src="https://raw.githubusercontent.com/darrenlittlejohn/sql_mini_mentalhealth/main/media/9682edf87f707db6bacd100eb1307408.png" alt="The Test">
-                            <div class="caption"><span>[THE TEST: ENGINEERING]</span> We built robust PostgreSQL pipelines to harmonize massive schema drift, isolating precise demographics to eliminate covariant noise.</div>
-                        </div>
-                        <!-- THE TEST (STATISTICAL) -->
-                        <div class="story-slide">
-                            <img src="https://raw.githubusercontent.com/darrenlittlejohn/sql_mini_mentalhealth/main/media/97b981dfbaf89552660e2ef09a420f40.png" alt="The Validation">
-                            <div class="caption"><span>[THE TEST: STATISTICAL]</span> We executed Chi-Square distributions to test for independence, proving the relationship between unmet need and unemployment is highly statistically significant (p < 0.05).</div>
-                        </div>
-                        <!-- THE FINDINGS -->
-                        <div class="story-slide">
-                            <img src="https://raw.githubusercontent.com/darrenlittlejohn/sql_mini_mentalhealth/main/media/7412b8e03e79fc8f986e116a9d8c06c2.png" alt="The Findings">
-                            <div class="caption"><span>[THE FINDINGS]</span> Unemployment spikes violently when an unmet need is present. Leaving mental health untreated is a measurable, catastrophic workforce crisis.</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <section id="pipeline" class="card panel project-section">
+        <div class="eyebrow">Research Pipeline</div>
+        <h2>Conception To Conclusion</h2>
+        <div class="steps">
+          <div class="step"><div class="num">1</div><strong>The Question</strong><p>Does failing to treat mental health needs cause measurable workforce detachment?</p></div>
+          <div class="step"><div class="num">2</div><strong>The Data</strong><p>2019 NSDUH / SAMHSA dataset with adult cohort and standardized variables.</p></div>
+          <div class="step"><div class="num">3</div><strong>The Test</strong><p>PostgreSQL ETL pipeline plus Chi-Square independence testing.</p></div>
+          <div class="step"><div class="num">4</div><strong>The Result</strong><p>Statistically significant employment drop when unmet need is present.</p></div>
+        </div>
+      </section>
 
-            <!-- METHODOLOGY -->
-            <div class="node node-full">
-                <div class="node-header">
-                    <span>MODULE.02 // HYPOTHESIS</span>
-                    <span>SOURCE: NSDUH 2019</span>
-                </div>
-                <div class="node-title">Primary <span>Model</span></div>
-                <div class="node-desc">
-                    Adults reporting an unmet need for mental health treatment have higher odds of being unemployed or out of the labor force than adults without an unmet need, controlling for demographics.
-                </div>
-                <ul class="hud-list">
-                    <li><strong>Exposure:</strong> unmet_need (Yes/No)</li>
-                    <li><strong>Outcome:</strong> employment_status (Full-Time, Part-Time, Unemployed)</li>
-                    <li><strong>Covariates:</strong> age_group, sex, race_ethnicity, education_level</li>
-                    <li><strong>Weights:</strong> sample_weight (Statistical normalization)</li>
-                </ul>
-            </div>
+      <section id="visual" class="card panel project-section">
+        <div class="eyebrow">Primary Visualization</div>
+        <h2>Main Evidence</h2>
+        <p class="section-copy">The primary chart makes the relationship legible quickly: unmet mental health need is associated with lower employment rates, with the difference remaining meaningful enough to support the broader conclusion.</p>
+        <div class="media-frame">
+          <img src="../assets/img/unmet_need_sex-2048x368.png" alt="Unmet mental health need by sex and employment status" class="project-image" />
+        </div>
+        <div class="info-grid">
+          <div class="media-frame"><img src="../assets/img/ffa3c1e969ff0bfdf80bf6813fc0ca66.png" alt="The Problem" class="project-image tall-image" /></div>
+          <div class="media-frame"><img src="../assets/img/adfb68d742f2c0b90ca898e7231b1d16.png" alt="The Data" class="project-image tall-image" /></div>
+          <div class="media-frame"><img src="../assets/img/91b4acff0e95e80ddc586a5d2fa2f190.png" alt="The Question" class="project-image tall-image" /></div>
+          <div class="media-frame"><img src="../assets/img/526f22d3206602dc505d1f0cc1e8c85b.png" alt="The Hypothesis" class="project-image tall-image" /></div>
+          <div class="media-frame"><img src="../assets/img/9682edf87f707db6bacd100eb1307408.png" alt="The Test - Engineering" class="project-image tall-image" /></div>
+          <div class="media-frame"><img src="../assets/img/97b981dfbaf89552660e2ef09a420f40.png" alt="The Validation" class="project-image tall-image" /></div>
+        </div>
+      </section>
 
-            <!-- ENGINEERING & DATA CLEANING -->
-            <div class="node node-full">
-                <div class="node-header">
-                    <span>MODULE.03 // DATA GOVERNANCE</span>
-                    <span>SYSTEM: PostgreSQL</span>
-                </div>
-                <div class="node-title">Pipelines & <span>Cleansing</span></div>
-                <div class="node-desc" style="margin-bottom: 25px;">
-                    This project included a heavy data-cleaning step focused on renaming raw public-use survey variables into plain English. 
-                    Public datasets like NSDUH and TEDS-A use compact codebook names (<code>AMHTXND2</code>, <code>IRWRKSTAT</code>) which are efficient for documentation but encrypted and unreadable in downstream dashboards. 
-                    <br><br>
-                    I standardized these fields into readable nomenclature so my SQL, Tableau workflows, and eventual presentations would be entirely transparent to non-technical stakeholders. 
-                    This step strictly improved readability and cross-dataset consistency without ever changing the underlying data definitions.
-                </div>
-                
-                <h4 style="color: var(--accent-glow); margin-bottom: 10px; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.1em;">[ CORE VARIABLE MAPPING MATRIX ]</h4>
-                <div style="overflow-y: auto; max-height: 250px; border: 1px solid var(--border-industrial); background: #000; border-radius: 4px;">
-                    <table class="data-matrix">
-                        <thead>
-                            <tr><th>Raw Syntax</th><th>Cleaned Output</th><th>Data Dictionary Rationale</th></tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>AMHTXND2</td><td>unmet_need</td><td>Codebook defines strictly as perceived unmet need for treatment.</td></tr>
-                            <tr><td>IRWRKSTAT</td><td>employment_status</td><td>Revised imputed employment status.</td></tr>
-                            <tr><td>IRWRKSTAT18</td><td>employment_status_18_plus</td><td>Age-restricted cohort analysis base.</td></tr>
-                            <tr><td>AMHSVTYP</td><td>mental_health_treatment_type</td><td>Type of mental health treatment received.</td></tr>
-                            <tr><td>SPDYRADJ</td><td>serious_psychological_distress</td><td>Standardized variable mapping across years.</td></tr>
-                            <tr><td>catage / AGE</td><td>age_group</td><td>Unified age categorization across TEDS-A and NSDUH pipelines.</td></tr>
-                            <tr><td>PSYPROB</td><td>cooccurring_mental_substance_disorder</td><td>Makes clinical correlation explicit.</td></tr>
-                            <tr><td>EDUC</td><td>education_level</td><td>Education at time of admission/survey.</td></tr>
-                            <tr><td>PRIMINC</td><td>primary_income_source</td><td>Principal source of income/support.</td></tr>
-                            <tr><td>ARRESTS</td><td>arrests_past_30_days</td><td>Directly bounds the legal timeframe.</td></tr>
-                            <tr><td>LIVARAG</td><td>living_arrangement</td><td>Housing status normalization.</td></tr>
-                            <tr><td>DETNLF</td><td>not_in_labor_force_detail</td><td>Detail matrix for labor force detachments.</td></tr>
-                            <tr><td>SUB1 / FREQ1</td><td>primary_substance / primary_use_frequency</td><td>Standardized sequence naming for matrix arrays.</td></tr>
-                        </tbody>
-                    </table>
-                </div>
+      <section id="results" class="card process project-section">
+        <div class="eyebrow">Results</div>
+        <h2>What The Data Shows</h2>
+        <div class="steps">
+          <div class="step"><div class="num">1</div><strong>Statistical Significance</strong><p>The null hypothesis is rejected under a materially significant result.</p></div>
+          <div class="step"><div class="num">2</div><strong>Employment Effect</strong><p>Employment drops meaningfully when unmet mental health need is present.</p></div>
+          <div class="step"><div class="num">3</div><strong>Analytical Value</strong><p>Demonstrates ETL, schema normalization, testing, and communication in one workflow.</p></div>
+          <div class="step"><div class="num">4</div><strong>Healthcare Relevance</strong><p>Connects directly to questions healthcare analytics teams solve around access, quality, and outcomes.</p></div>
+        </div>
+      </section>
 
-                <ul class="hud-list" style="margin-top: 25px;">
-                    <li><strong>Schema Drift:</strong> Reconstructed fractured variables directly via logic shifts (2022-2023 populations).</li>
-                    <li><strong>Validation:</strong> Enforced extreme header strictness and statistical weight integrity indexing across the entire pipeline.</li>
-                </ul>
-            </div>
+      <section id="contact" class="card panel">
+        <div class="eyebrow">Next Step</div>
+        <h2>Discuss The Work</h2>
+        <div class="cta-row">
+          <a class="cta" href="https://github.com/darrenlittlejohn/sql_mini_mentalhealth" target="_blank" rel="noopener noreferrer">Project Repo</a>
+          <a class="cta primary" href="mailto:darren@darrenlittlejohn.com">Schedule Interview</a>
+          <a class="cta" href="../index.html">Return Home</a>
+        </div>
+      </section>
+    </main>
+  </div>
 
-            <!-- STATISTICAL VALIDATION -->
-            <div class="node node-full">
-                <div class="node-header">
-                    <span>MODULE.04 // STATISTICAL TESTS</span>
-                    <span>STATUS: VALIDATED</span>
-                </div>
-                <div class="node-title">What The Data <span>Shows Us</span></div>
-                <div class="node-desc">
-                    Rather than relying on raw counts, rigorous statistical validation was applied to prove the hypothesis.
-                </div>
-                <ul class="hud-list">
-                    <li><strong>1. Contingency & Cross-Tabulation:</strong> Shows that within populations suffering from unmet mental health needs, the percentage of individuals capable of holding full-time employment drops significantly (from ~67% down to ~61%), shifting heavily toward part-time or total unemployment.</li>
-                    <li><strong>2. Chi-Square Test of Independence:</strong> Statistically proves (Rejecting the Null Hypothesis) that employment status is intrinsically dependent on mental health treatment accessibility. The massive disparities observed are not random population anomalies.</li>
-                    <li><strong>3. Modeling Progression:</strong> Initial logistic regression modeling failed because both primary vectors were categorical integers with no underlying continuous scale. This validated the necessity of advancing to Multinomial Logistic Regression to properly weigh the outcomes.</li>
-                </ul>
-            </div>
-
-            <!-- ASSETS -->
-            <div class="node node-full">
-                <div class="node-header">
-                    <span>MODULE.05 // SOURCE</span>
-                    <span>ACCESS: PUBLIC GITHUB</span>
-                </div>
-                <div class="node-title">Code <span>Repository</span></div>
-                <div class="node-desc">Review the raw queries, methodology documentation, and architecture syntax.</div>
-                <div style="margin-top: 10px;">
-                    <a href="https://github.com/darrenlittlejohn/sql_mini_mentalhealth" target="_blank" style="color: #000; background: var(--accent-glow); padding: 10px 20px; text-decoration: none; font-weight: 800; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; display: inline-block;">
-                        VIEW RAW GITHUB CODE //
-                    </a>
-                </div>
-            </div>
-
-            <!-- TL;DR EXECUTIVE SUMMARY (BOTTOM FAST-READ) -->
-            <div class="node node-full" style="border-color: var(--accent-glow); box-shadow: 0 0 40px rgba(0, 255, 140, 0.05); padding: 40px;">
-                <div class="node-header">
-                    <span>EXECUTIVE SUMMARY // TL;DR</span>
-                    <span style="color: #000; background: var(--accent-glow); padding: 4px 12px; font-weight: bold;">THE BOTTOM LINE</span>
-                </div>
-                <div class="node-title" style="font-size: 2.2rem;">The <span>TL;DR</span> Interpretation</div>
-                <div class="node-desc" style="font-size: 1.25rem; line-height: 1.6; margin-top: 20px;">
-                    <strong style="color: #fff; display: block; margin-bottom: 20px; font-size: 1.5rem;">Unmet Needs = Workforce Detachment</strong>
-                    When people <strong>do not have</strong> an unmet mental health need, the absolute vast majority are securely engaged in full-time work.<br><br>
-                    However, when people <strong>do suffer</strong> from an unmet mental health need, the rate of <em>total unemployment and severe workforce detachment spikes substantially</em> relative to their underlying population size. 
-                    <br><br>
-                    <span style="color: var(--accent-glow); font-family: 'JetBrains Mono', monospace; font-size: 0.95rem; text-transform: uppercase; display: block; margin-top: 25px;">// Finding statistically verified via controlled Chi-Square distributions across millions of federal records (p < 0.05).</span>
-                </div>
-            </div>
-
-        </div> <!-- /.grid-layout -->
-    </div> <!-- /.container -->
+  <script src="../js/demo4.js"></script>
 </body>
 </html>
