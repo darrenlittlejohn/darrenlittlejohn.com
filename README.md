@@ -1,7 +1,7 @@
 # Darren Littlejohn Portfolio Website
 
 <p align="center">
-  <img src="assets/img/darrenlittlejohn.com_readme.png" alt="Darren Littlejohn Portfolio Preview" width="100%">
+  <img src="docs/screenshots/04_10_26_site.png" alt="Darren Littlejohn Portfolio Preview" width="100%">
 </p>
 
 This repository is the public portfolio layer for Darren Littlejohn's healthcare analytics work.
